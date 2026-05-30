@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Activity Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 id="appTitle">AI Activity Tracker</h1>
+            <div class="header-controls">
+                <select id="languageSelect" class="language-select">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Date Selector -->
+        <div class="date-section">
+            <label for="dateInput" id="dateLabel">Select Date:</label>
+            <input type="date" id="dateInput" class="date-input">
+            <span id="displayDate" class="display-date"></span>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notificationBox" class="notification-box"></div>
+
+        <!-- Achievement Progress -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span id="progressLabel">Daily Achievement:</span>
+                <span id="progressPercent" class="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Activity Table -->
+        <div class="table-section">
+            <div class="table-header">
+                <h2 id="activitiesTitle">Daily Activities</h2>
+                <button id="addActivityBtn" class="add-btn">+ Add Activity</button>
+            </div>
+
+            <div class="table-container">
+                <table class="activities-table">
+                    <thead>
+                        <tr>
+                            <th id="thDone">Done</th>
+                            <th id="thActivity">Activity</th>
+                            <th id="thTime">Time</th>
+                            <th id="thCategory">Category</th>
+                            <th id="thActions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activitiesBody">
+                        <!-- Activities will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Activity Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">Add New Activity</h2>
+                <form id="activityForm">
+                    <div class="form-group">
+                        <label for="activityInput" id="labelActivity">Activity:</label>
+                        <input type="text" id="activityInput" placeholder="Enter activity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeInput" id="labelTime">Time:</label>
+                        <input type="time" id="timeInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryInput" id="labelCategory">Category:</label>
+                        <select id="categoryInput" required>
+                            <option value="work">Work</option>
+                            <option value="health">Health</option>
+                            <option value="learning">Learning</option>
+                            <option value="personal">Personal</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="submitBtn" class="submit-btn">Add Activity</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

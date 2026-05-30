@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f9f4;
+    color: #333;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(to right, #1b5e20, #009688);
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    margin-top: 10px;
+}
+
+/* MAIN CALENDAR SECTION */
+.calendar-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+/* MONTH TITLE */
+.calendar-container h2 {
+    text-align: center;
+    color: #1b5e20;
+    margin-bottom: 20px;
+}
+
+/* DAYS OF WEEK */
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.days div {
+    background: #1b5e20;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* CALENDAR GRID */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+}
+
+/* DAY BOX */
+.day-box {
+    background: white;
+
+    background-image: linear-gradient(
+        to bottom right,
+        rgba(76, 175, 80, 0.08),
+        rgba(0, 150, 136, 0.08)
+    );
+
+    min-height: 180px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    border-left: 6px solid #2e7d32;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    outline: 2px solid #b2dfdb;
+    outline-offset: 4px;
+
+    transition: transform 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.day-box:hover {
+    transform: translateY(-5px);
+}
+
+/* DAY NUMBER */
+.day-box h3 {
+    margin-top: 0;
+    color: #1b5e20;
+}
+
+/* TASK LIST */
+.day-box ul {
+    padding-left: 20px;
+}
+
+.day-box li {
+    margin-bottom: 8px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+    .days,
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
