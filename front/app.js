@@ -2,10 +2,17 @@
 const translations = {
     en: {
         appTitle: "AI Activity Tracker",
+        subtitle: "Business Meeting & Appointment Manager",
         dateLabel: "Select Date:",
         progressLabel: "Daily Achievement:",
-        activitiesTitle: "Daily Activities",
+        plansTitle: "📋 Row A: Plans & Meetings",
+        actionsTitle: "✓ Row B: Daily Actions",
+        addMeetingBtn: "+ Add Meeting",
         addActivityBtn: "+ Add Activity",
+        meetingsBoxTitle: "Scheduled Meetings",
+        appointmentsBoxTitle: "Appointments",
+        callsBoxTitle: "Scheduled Calls",
+        activitiesTitle: "Daily Activities",
         thDone: "Done",
         thActivity: "Activity",
         thTime: "Time",
@@ -18,77 +25,209 @@ const translations = {
         submitBtn: "Add Activity",
         deleteBtn: "Delete",
         completedNotification: "Activity completed: ",
-        addedNotification: "New activity added: "
+        addedNotification: "New activity added: ",
+        meetingModalTitle: "Add Meeting",
+        labelMeetingTitle: "Meeting Title:",
+        labelMeetingTime: "Time:",
+        labelMeetingDuration: "Duration (min):",
+        labelMeetingAttendees: "Attendees (emails):",
+        labelMeetingType: "Meeting Type:",
+        labelMeetingDescription: "Description:",
+        submitMeetingBtn: "Add Meeting",
+        appointmentModalTitle: "Add Appointment",
+        labelAppointmentTitle: "Appointment Title:",
+        labelAppointmentTime: "Time:",
+        labelAppointmentLocation: "Location:",
+        labelAppointmentContact: "Contact Email:",
+        labelReminder: "Set reminder (15 min before)",
+        submitAppointmentBtn: "Add Appointment",
+        callModalTitle: "Schedule Call",
+        labelCallPerson: "Person/Company:",
+        labelCallPhone: "Phone Number:",
+        labelCallEmail: "Email:",
+        labelCallTime: "Scheduled Time:",
+        labelCallPurpose: "Purpose:",
+        submitCallBtn: "Schedule Call",
+        callBtn: "☎ Call",
+        emailBtn: "📧 Email",
+        meetingAdded: "Meeting added successfully",
+        appointmentAdded: "Appointment added successfully",
+        callScheduled: "Call scheduled successfully"
     },
     es: {
         appTitle: "Rastreador de Actividades IA",
+        subtitle: "Gestor de Reuniones y Citas Comerciales",
         dateLabel: "Seleccionar fecha:",
         progressLabel: "Logro diario:",
-        activitiesTitle: "Actividades diarias",
-        addActivityBtn: "+ Agregar actividad",
+        plansTitle: "📋 Fila A: Planes y Reuniones",
+        actionsTitle: "✓ Fila B: Acciones Diarias",
+        addMeetingBtn: "+ Agregar Reunión",
+        addActivityBtn: "+ Agregar Actividad",
+        meetingsBoxTitle: "Reuniones Programadas",
+        appointmentsBoxTitle: "Citas",
+        callsBoxTitle: "Llamadas Programadas",
+        activitiesTitle: "Actividades Diarias",
         thDone: "Hecho",
         thActivity: "Actividad",
         thTime: "Tiempo",
         thCategory: "Categoría",
         thActions: "Acciones",
-        modalTitle: "Agregar nueva actividad",
+        modalTitle: "Agregar Nueva Actividad",
         labelActivity: "Actividad:",
         labelTime: "Tiempo:",
         labelCategory: "Categoría:",
-        submitBtn: "Agregar actividad",
+        submitBtn: "Agregar Actividad",
         deleteBtn: "Eliminar",
         completedNotification: "Actividad completada: ",
-        addedNotification: "Nueva actividad agregada: "
+        addedNotification: "Nueva actividad agregada: ",
+        meetingModalTitle: "Agregar Reunión",
+        labelMeetingTitle: "Título de Reunión:",
+        labelMeetingTime: "Hora:",
+        labelMeetingDuration: "Duración (min):",
+        labelMeetingAttendees: "Asistentes (emails):",
+        labelMeetingType: "Tipo de Reunión:",
+        labelMeetingDescription: "Descripción:",
+        submitMeetingBtn: "Agregar Reunión",
+        appointmentModalTitle: "Agregar Cita",
+        labelAppointmentTitle: "Título de Cita:",
+        labelAppointmentTime: "Hora:",
+        labelAppointmentLocation: "Ubicación:",
+        labelAppointmentContact: "Email de Contacto:",
+        labelReminder: "Establecer recordatorio (15 min antes)",
+        submitAppointmentBtn: "Agregar Cita",
+        callModalTitle: "Programar Llamada",
+        labelCallPerson: "Persona/Empresa:",
+        labelCallPhone: "Número de Teléfono:",
+        labelCallEmail: "Email:",
+        labelCallTime: "Hora Programada:",
+        labelCallPurpose: "Propósito:",
+        submitCallBtn: "Programar Llamada",
+        callBtn: "☎ Llamar",
+        emailBtn: "📧 Email",
+        meetingAdded: "Reunión agregada exitosamente",
+        appointmentAdded: "Cita agregada exitosamente",
+        callScheduled: "Llamada programada exitosamente"
     },
     fr: {
         appTitle: "Suivi des Activités IA",
+        subtitle: "Gestionnaire de Réunions et de Rendez-vous Professionnels",
         dateLabel: "Sélectionner la date:",
         progressLabel: "Réussite quotidienne:",
-        activitiesTitle: "Activités quotidiennes",
-        addActivityBtn: "+ Ajouter une activité",
+        plansTitle: "📋 Ligne A: Plans et Réunions",
+        actionsTitle: "✓ Ligne B: Actions Quotidiennes",
+        addMeetingBtn: "+ Ajouter Réunion",
+        addActivityBtn: "+ Ajouter Activité",
+        meetingsBoxTitle: "Réunions Programmées",
+        appointmentsBoxTitle: "Rendez-vous",
+        callsBoxTitle: "Appels Programmés",
+        activitiesTitle: "Activités Quotidiennes",
         thDone: "Fait",
         thActivity: "Activité",
         thTime: "Temps",
         thCategory: "Catégorie",
         thActions: "Actions",
-        modalTitle: "Ajouter une nouvelle activité",
+        modalTitle: "Ajouter une Nouvelle Activité",
         labelActivity: "Activité:",
         labelTime: "Temps:",
         labelCategory: "Catégorie:",
-        submitBtn: "Ajouter une activité",
+        submitBtn: "Ajouter Activité",
         deleteBtn: "Supprimer",
         completedNotification: "Activité complétée: ",
-        addedNotification: "Nouvelle activité ajoutée: "
+        addedNotification: "Nouvelle activité ajoutée: ",
+        meetingModalTitle: "Ajouter Réunion",
+        labelMeetingTitle: "Titre de Réunion:",
+        labelMeetingTime: "Heure:",
+        labelMeetingDuration: "Durée (min):",
+        labelMeetingAttendees: "Participants (emails):",
+        labelMeetingType: "Type de Réunion:",
+        labelMeetingDescription: "Description:",
+        submitMeetingBtn: "Ajouter Réunion",
+        appointmentModalTitle: "Ajouter Rendez-vous",
+        labelAppointmentTitle: "Titre du Rendez-vous:",
+        labelAppointmentTime: "Heure:",
+        labelAppointmentLocation: "Lieu:",
+        labelAppointmentContact: "Email de Contact:",
+        labelReminder: "Définir un rappel (15 min avant)",
+        submitAppointmentBtn: "Ajouter Rendez-vous",
+        callModalTitle: "Programmer Appel",
+        labelCallPerson: "Personne/Entreprise:",
+        labelCallPhone: "Numéro de Téléphone:",
+        labelCallEmail: "Email:",
+        labelCallTime: "Heure Programmée:",
+        labelCallPurpose: "Objectif:",
+        submitCallBtn: "Programmer Appel",
+        callBtn: "☎ Appel",
+        emailBtn: "📧 Email",
+        meetingAdded: "Réunion ajoutée avec succès",
+        appointmentAdded: "Rendez-vous ajouté avec succès",
+        callScheduled: "Appel programmé avec succès"
     },
     de: {
         appTitle: "KI-Aktivitätsverfolgung",
+        subtitle: "Geschäftsmeeting- und Terminmanager",
         dateLabel: "Datum auswählen:",
         progressLabel: "Tägliche Errungenschaft:",
+        plansTitle: "📋 Zeile A: Pläne und Meetings",
+        actionsTitle: "✓ Zeile B: Tägliche Maßnahmen",
+        addMeetingBtn: "+ Meeting Hinzufügen",
+        addActivityBtn: "+ Aktivität Hinzufügen",
+        meetingsBoxTitle: "Geplante Meetings",
+        appointmentsBoxTitle: "Termine",
+        callsBoxTitle: "Geplante Anrufe",
         activitiesTitle: "Tägliche Aktivitäten",
-        addActivityBtn: "+ Aktivität hinzufügen",
         thDone: "Fertig",
         thActivity: "Aktivität",
         thTime: "Zeit",
         thCategory: "Kategorie",
         thActions: "Aktionen",
-        modalTitle: "Neue Aktivität hinzufügen",
+        modalTitle: "Neue Aktivität Hinzufügen",
         labelActivity: "Aktivität:",
         labelTime: "Zeit:",
         labelCategory: "Kategorie:",
-        submitBtn: "Aktivität hinzufügen",
+        submitBtn: "Aktivität Hinzufügen",
         deleteBtn: "Löschen",
         completedNotification: "Aktivität abgeschlossen: ",
-        addedNotification: "Neue Aktivität hinzugefügt: "
+        addedNotification: "Neue Aktivität hinzugefügt: ",
+        meetingModalTitle: "Meeting Hinzufügen",
+        labelMeetingTitle: "Meeting-Titel:",
+        labelMeetingTime: "Uhrzeit:",
+        labelMeetingDuration: "Dauer (min):",
+        labelMeetingAttendees: "Teilnehmer (E-Mails):",
+        labelMeetingType: "Meeting-Typ:",
+        labelMeetingDescription: "Beschreibung:",
+        submitMeetingBtn: "Meeting Hinzufügen",
+        appointmentModalTitle: "Termin Hinzufügen",
+        labelAppointmentTitle: "Termin-Titel:",
+        labelAppointmentTime: "Uhrzeit:",
+        labelAppointmentLocation: "Ort:",
+        labelAppointmentContact: "Kontakt-E-Mail:",
+        labelReminder: "Erinnerung setzen (15 Min. vorher)",
+        submitAppointmentBtn: "Termin Hinzufügen",
+        callModalTitle: "Anruf Planen",
+        labelCallPerson: "Person/Unternehmen:",
+        labelCallPhone: "Telefonnummer:",
+        labelCallEmail: "E-Mail:",
+        labelCallTime: "Geplante Uhrzeit:",
+        labelCallPurpose: "Zweck:",
+        submitCallBtn: "Anruf Planen",
+        callBtn: "☎ Anruf",
+        emailBtn: "📧 Email",
+        meetingAdded: "Meeting erfolgreich hinzugefügt",
+        appointmentAdded: "Termin erfolgreich hinzugefügt",
+        callScheduled: "Anruf erfolgreich geplant"
     }
 };
 
 let currentLanguage = 'en';
 let activities = {};
+let meetings = {};
+let appointments = {};
+let calls = {};
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     setToday();
-    loadActivities();
+    loadData();
     setupEventListeners();
     updateUI();
 });
@@ -96,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupEventListeners() {
     // Date input
     document.getElementById('dateInput').addEventListener('change', () => {
-        loadActivities();
+        loadData();
         updateUI();
     });
 
@@ -106,27 +245,64 @@ function setupEventListeners() {
         updateLanguage();
     });
 
-    // Modal controls
-    const modal = document.getElementById('modal');
-    const addBtn = document.getElementById('addActivityBtn');
-    const closeBtn = document.querySelector('.close');
-    const form = document.getElementById('activityForm');
+    // Activity Modal
+    const activityModal = document.getElementById('modal');
+    const addActivityBtn = document.getElementById('addActivityBtn');
+    const closeActivityBtn = document.querySelector('.close');
+    const activityForm = document.getElementById('activityForm');
 
-    addBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
+    addActivityBtn.addEventListener('click', () => {
+        activityModal.style.display = 'block';
     });
 
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
+    closeActivityBtn.addEventListener('click', () => {
+        activityModal.style.display = 'none';
     });
 
+    activityForm.addEventListener('submit', addActivity);
+
+    // Meeting Modal
+    const meetingModal = document.getElementById('meetingModal');
+    const addMeetingBtn = document.getElementById('addMeetingBtn');
+    const meetingForm = document.getElementById('meetingForm');
+
+    addMeetingBtn.addEventListener('click', () => {
+        meetingModal.style.display = 'block';
+    });
+
+    meetingForm.addEventListener('submit', addMeeting);
+
+    // Appointment Modal
+    const appointmentModal = document.getElementById('appointmentModal');
+    const appointmentForm = document.getElementById('appointmentForm');
+
+    appointmentForm.addEventListener('submit', addAppointment);
+
+    // Call Modal
+    const callModal = document.getElementById('callModal');
+    const callForm = document.getElementById('callForm');
+
+    callForm.addEventListener('submit', addCall);
+
+    // Close modals when clicking outside
     window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
+        if (e.target === activityModal) activityModal.style.display = 'none';
+        if (e.target === meetingModal) meetingModal.style.display = 'none';
+        if (e.target === appointmentModal) appointmentModal.style.display = 'none';
+        if (e.target === callModal) callModal.style.display = 'none';
     });
+}
 
-    form.addEventListener('submit', addActivity);
+function closeMeetingModal() {
+    document.getElementById('meetingModal').style.display = 'none';
+}
+
+function closeAppointmentModal() {
+    document.getElementById('appointmentModal').style.display = 'none';
+}
+
+function closeCallModal() {
+    document.getElementById('callModal').style.display = 'none';
 }
 
 function setToday() {
@@ -146,32 +322,33 @@ function updateDateDisplay() {
 function updateLanguage() {
     const t = translations[currentLanguage];
     document.getElementById('appTitle').textContent = t.appTitle;
+    document.getElementById('subtitle').textContent = t.subtitle;
     document.getElementById('dateLabel').textContent = t.dateLabel;
     document.getElementById('progressLabel').textContent = t.progressLabel;
-    document.getElementById('activitiesTitle').textContent = t.activitiesTitle;
+    document.getElementById('plansTitle').textContent = t.plansTitle;
+    document.getElementById('actionsTitle').textContent = t.actionsTitle;
+    document.getElementById('addMeetingBtn').textContent = t.addMeetingBtn;
     document.getElementById('addActivityBtn').textContent = t.addActivityBtn;
+    document.getElementById('meetingsBoxTitle').textContent = t.meetingsBoxTitle;
+    document.getElementById('appointmentsBoxTitle').textContent = t.appointmentsBoxTitle;
+    document.getElementById('callsBoxTitle').textContent = t.callsBoxTitle;
     document.getElementById('thDone').textContent = t.thDone;
     document.getElementById('thActivity').textContent = t.thActivity;
     document.getElementById('thTime').textContent = t.thTime;
     document.getElementById('thCategory').textContent = t.thCategory;
     document.getElementById('thActions').textContent = t.thActions;
-    document.getElementById('modalTitle').textContent = t.modalTitle;
-    document.getElementById('labelActivity').textContent = t.labelActivity;
-    document.getElementById('labelTime').textContent = t.labelTime;
-    document.getElementById('labelCategory').textContent = t.labelCategory;
-    document.getElementById('submitBtn').textContent = t.submitBtn;
 }
 
 function getDate() {
     return document.getElementById('dateInput').value;
 }
 
-function loadActivities() {
+function loadData() {
     const date = getDate();
-    if (!activities[date]) {
-        activities[date] = [];
-    }
-    renderActivities();
+    if (!activities[date]) activities[date] = [];
+    if (!meetings[date]) meetings[date] = [];
+    if (!appointments[date]) appointments[date] = [];
+    if (!calls[date]) calls[date] = [];
 }
 
 function addActivity(e) {
@@ -196,6 +373,150 @@ function addActivity(e) {
     updateProgress();
 }
 
+function addMeeting(e) {
+    e.preventDefault();
+    const date = getDate();
+    const title = document.getElementById('meetingTitle').value;
+    const time = document.getElementById('meetingTime').value;
+    const duration = document.getElementById('meetingDuration').value;
+    const attendees = document.getElementById('meetingAttendees').value;
+    const type = document.getElementById('meetingType').value;
+    const description = document.getElementById('meetingDescription').value;
+
+    meetings[date].push({
+        id: Date.now(),
+        title,
+        time,
+        duration,
+        attendees,
+        type,
+        description
+    });
+
+    showNotification(translations[currentLanguage].meetingAdded, 'success');
+    document.getElementById('meetingForm').reset();
+    closeMeetingModal();
+    renderMeetings();
+}
+
+function addAppointment(e) {
+    e.preventDefault();
+    const date = getDate();
+    const title = document.getElementById('appointmentTitle').value;
+    const time = document.getElementById('appointmentTime').value;
+    const location = document.getElementById('appointmentLocation').value;
+    const contact = document.getElementById('appointmentContact').value;
+    const reminder = document.getElementById('appointmentReminder').checked;
+
+    appointments[date].push({
+        id: Date.now(),
+        title,
+        time,
+        location,
+        contact,
+        reminder
+    });
+
+    showNotification(translations[currentLanguage].appointmentAdded, 'success');
+    document.getElementById('appointmentForm').reset();
+    closeAppointmentModal();
+    renderAppointments();
+}
+
+function addCall(e) {
+    e.preventDefault();
+    const date = getDate();
+    const person = document.getElementById('callPerson').value;
+    const phone = document.getElementById('callPhone').value;
+    const email = document.getElementById('callEmail').value;
+    const time = document.getElementById('callTime').value;
+    const purpose = document.getElementById('callPurpose').value;
+
+    calls[date].push({
+        id: Date.now(),
+        person,
+        phone,
+        email,
+        time,
+        purpose
+    });
+
+    showNotification(translations[currentLanguage].callScheduled, 'success');
+    document.getElementById('callForm').reset();
+    closeCallModal();
+    renderCalls();
+}
+
+function renderMeetings() {
+    const date = getDate();
+    const list = document.getElementById('meetingsList');
+    const count = document.getElementById('meetingCount');
+    list.innerHTML = '';
+    count.textContent = meetings[date].length;
+
+    meetings[date].forEach(meeting => {
+        const div = document.createElement('div');
+        div.className = 'meeting-item';
+        div.innerHTML = `
+            <div class="meeting-time">🕐 ${meeting.time}</div>
+            <div class="meeting-title">${meeting.title}</div>
+            <div class="meeting-type">Type: ${meeting.type}</div>
+            <div class="item-actions">
+                <button class="action-btn email-btn" onclick="sendMeetingEmail('${meeting.attendees}', '${meeting.title}')">📧 Email</button>
+                <button class="action-btn delete-btn" onclick="deleteMeeting(${meeting.id})">🗑 Delete</button>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function renderAppointments() {
+    const date = getDate();
+    const list = document.getElementById('appointmentsList');
+    const count = document.getElementById('appointmentCount');
+    list.innerHTML = '';
+    count.textContent = appointments[date].length;
+
+    appointments[date].forEach(apt => {
+        const div = document.createElement('div');
+        div.className = 'appointment-item';
+        div.innerHTML = `
+            <div class="appointment-time">🕐 ${apt.time}</div>
+            <div class="appointment-title">${apt.title}</div>
+            <div class="appointment-location">📍 ${apt.location || 'Not specified'}</div>
+            <div class="item-actions">
+                <button class="action-btn email-btn" onclick="sendEmail('${apt.contact}')">📧 Email</button>
+                <button class="action-btn delete-btn" onclick="deleteAppointment(${apt.id})">🗑 Delete</button>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function renderCalls() {
+    const date = getDate();
+    const list = document.getElementById('callsList');
+    const count = document.getElementById('callCount');
+    list.innerHTML = '';
+    count.textContent = calls[date].length;
+
+    calls[date].forEach(call => {
+        const div = document.createElement('div');
+        div.className = 'call-item';
+        div.innerHTML = `
+            <div class="call-time">🕐 ${call.time}</div>
+            <div class="call-title">${call.person}</div>
+            <div class="call-phone">☎ ${call.phone}</div>
+            <div class="item-actions">
+                <button class="action-btn call-btn" onclick="initiateCall('${call.phone}')">☎ Call</button>
+                <button class="action-btn email-btn" onclick="sendEmail('${call.email}')">📧 Email</button>
+                <button class="action-btn delete-btn" onclick="deleteCall(${call.id})">🗑 Delete</button>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
 function renderActivities() {
     const date = getDate();
     const tbody = document.getElementById('activitiesBody');
@@ -212,6 +533,7 @@ function renderActivities() {
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox-input';
         checkbox.checked = item.done;
         checkbox.addEventListener('change', () => toggleActivity(item.id));
 
@@ -220,7 +542,7 @@ function renderActivities() {
         categoryBadge.textContent = item.category.charAt(0).toUpperCase() + item.category.slice(1);
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn-small btn-delete';
+        deleteBtn.className = 'delete-activity-btn';
         deleteBtn.textContent = translations[currentLanguage].deleteBtn;
         deleteBtn.addEventListener('click', () => deleteActivity(item.id));
 
@@ -260,6 +582,47 @@ function deleteActivity(id) {
     updateProgress();
 }
 
+function deleteMeeting(id) {
+    const date = getDate();
+    meetings[date] = meetings[date].filter(m => m.id !== id);
+    renderMeetings();
+}
+
+function deleteAppointment(id) {
+    const date = getDate();
+    appointments[date] = appointments[date].filter(a => a.id !== id);
+    renderAppointments();
+}
+
+function deleteCall(id) {
+    const date = getDate();
+    calls[date] = calls[date].filter(c => c.id !== id);
+    renderCalls();
+}
+
+function sendEmail(email) {
+    if (email) {
+        window.location.href = `mailto:${email}`;
+    } else {
+        alert('No email address available');
+    }
+}
+
+function sendMeetingEmail(attendees, title) {
+    if (attendees) {
+        const subject = `Meeting: ${title}`;
+        const body = `Meeting: ${title}\n\nPlease confirm your attendance.`;
+        window.location.href = `mailto:${attendees}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    } else {
+        alert('No attendees specified');
+    }
+}
+
+function initiateCall(phone) {
+    // This creates a tel: link that works on devices with calling capabilities
+    window.location.href = `tel:${phone.replace(/\D/g, '')}`;
+}
+
 function updateProgress() {
     const date = getDate();
     if (!activities[date] || activities[date].length === 0) {
@@ -279,18 +642,22 @@ function updateProgress() {
 function showNotification(message, type = 'info') {
     const notificationBox = document.getElementById('notificationBox');
     const notification = document.createElement('div');
-    notification.className = `notification-item ${type}`;
+    notification.className = `notification`;
     notification.textContent = message;
 
     notificationBox.appendChild(notification);
 
     setTimeout(() => {
         notification.remove();
-    }, 3000);
+    }, 4000);
 }
 
 function updateUI() {
     updateDateDisplay();
-    loadActivities();
+    loadData();
+    renderActivities();
+    renderMeetings();
+    renderAppointments();
+    renderCalls();
     updateProgress();
 }
