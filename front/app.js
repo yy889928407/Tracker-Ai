@@ -457,13 +457,16 @@ function addAppointment(e) {
         time,
         location,
         contact,
-        reminder
+        reminder,
+        completed: false
     });
 
     showNotification(translations[currentLanguage].appointmentAdded, 'success');
     document.getElementById('appointmentForm').reset();
     closeAppointmentModal();
     renderAppointments();
+    renderSchedule();
+    updateProgress();
 }
 
 function addCall(e) {
@@ -527,13 +530,85 @@ function renderAppointments() {
             <div class="appointment-time">🕐 ${apt.time}</div>
             <div class="appointment-title">${apt.title}</div>
             <div class="appointment-location">📍 ${apt.location || 'Not specified'}</div>
+            <div class="appointment-status">Status: ${apt.completed ? 'Completed' : 'Pending'}</div>
             <div class="item-actions">
+                <button class="action-btn status-btn" onclick="toggleAppointment(${apt.id})">${apt.completed ? 'Mark Pending' : 'Mark Completed'}</button>
                 <button class="action-btn email-btn" onclick="sendEmail('${apt.contact}')">📧 Email</button>
                 <button class="action-btn delete-btn" onclick="deleteAppointment(${apt.id})">🗑 Delete</button>
             </div>
         `;
         list.appendChild(div);
     });
+}
+
+function renderSchedule() {
+    const date = getDate();
+    const list = document.getElementById('scheduleList');
+    const scheduleCount = document.getElementById('scheduleCount');
+    const items = [];
+
+    meetings[date].forEach(meeting => {
+        items.push({
+            time: meeting.time,
+            type: 'Meeting',
+            title: meeting.title,
+            details: meeting.type,
+            status: 'Scheduled'
+        });
+    });
+
+    appointments[date].forEach(apt => {
+        items.push({
+            time: apt.time,
+            type: 'Appointment',
+            title: apt.title,
+            details: apt.location || 'No location',
+            status: apt.completed ? 'Completed' : 'Pending'
+        });
+    });
+
+    calls[date].forEach(call => {
+        items.push({
+            time: call.time,
+            type: 'Call',
+            title: call.person,
+            details: call.purpose,
+            status: 'Scheduled'
+        });
+    });
+
+    items.sort((a, b) => a.time.localeCompare(b.time));
+    scheduleCount.textContent = `${items.length} items`;
+    list.innerHTML = '';
+
+    if (items.length === 0) {
+        list.innerHTML = '<div class="schedule-empty">No items scheduled for today.</div>';
+        return;
+    }
+
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'schedule-item';
+        div.innerHTML = `
+            <div class="schedule-time">${item.time}</div>
+            <div class="schedule-detail">
+                <div class="schedule-title">${item.type}: ${item.title}</div>
+                <div class="schedule-meta">${item.details} · <span class="schedule-status">${item.status}</span></div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function toggleAppointment(id) {
+    const date = getDate();
+    const appointment = appointments[date].find(a => a.id === id);
+    if (appointment) {
+        appointment.completed = !appointment.completed;
+        renderAppointments();
+        renderSchedule();
+        updateProgress();
+    }
 }
 
 function renderCalls() {
@@ -629,18 +704,22 @@ function deleteMeeting(id) {
     const date = getDate();
     meetings[date] = meetings[date].filter(m => m.id !== id);
     renderMeetings();
+    renderSchedule();
 }
 
 function deleteAppointment(id) {
     const date = getDate();
     appointments[date] = appointments[date].filter(a => a.id !== id);
     renderAppointments();
+    renderSchedule();
+    updateProgress();
 }
 
 function deleteCall(id) {
     const date = getDate();
     calls[date] = calls[date].filter(c => c.id !== id);
     renderCalls();
+    renderSchedule();
 }
 
 function sendEmail(email) {
@@ -668,18 +747,26 @@ function initiateCall(phone) {
 
 function updateProgress() {
     const date = getDate();
-    if (!activities[date] || activities[date].length === 0) {
-        document.getElementById('progressFill').style.width = '0%';
-        document.getElementById('progressPercent').textContent = '0%';
-        return;
-    }
+    const activityItems = activities[date] || [];
+    const appointmentItems = appointments[date] || [];
 
-    const completed = activities[date].filter(a => a.done).length;
-    const total = activities[date].length;
-    const percent = Math.round((completed / total) * 100);
+    const completedActivities = activityItems.filter(a => a.done).length;
+    const completedAppointments = appointmentItems.filter(a => a.completed).length;
+    const totalItems = activityItems.length + appointmentItems.length;
+    const completedItems = completedActivities + completedAppointments;
+    const percent = totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
 
     document.getElementById('progressFill').style.width = percent + '%';
     document.getElementById('progressPercent').textContent = percent + '%';
+
+    if (document.getElementById('trackerPending')) {
+        document.getElementById('trackerPending').textContent = totalItems - completedItems;
+        document.getElementById('trackerCompleted').textContent = completedItems;
+        const now = new Date().toISOString().substr(11, 5);
+        const overdueCount = activityItems.filter(a => a.time && a.time < now && !a.done).length +
+            appointmentItems.filter(a => a.time && a.time < now && !a.completed).length;
+        document.getElementById('trackerOverdue').textContent = overdueCount;
+    }
 }
 
 function showNotification(message, type = 'info') {
@@ -812,5 +899,6 @@ function updateUI() {
     renderMeetings();
     renderAppointments();
     renderCalls();
+    renderSchedule();
     updateProgress();
 }

@@ -238,33 +238,131 @@ header {
 /* ===== LAYOUT CONTAINER ===== */
 .layout-container {
     padding: 20px 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.plan-box {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 16px;
+    min-height: 320px;
 }
 
-/* ===== ROW SECTIONS ===== */
-.row-section {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.row-title {
+.box-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #00a8cc;
+    gap: 15px;
 }
 
-.row-title h2 {
+.box-header h3 {
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1.25rem;
     color: #0d7377;
+}
+
+.box-action-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #00a8cc;
+    color: white;
     font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.box-action-btn:hover {
+    background: #0d7377;
+}
+
+.box-meta,
+.schedule-count {
+    color: #14919b;
+    font-size: 0.95rem;
+}
+
+.tracker-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.summary-item {
+    flex: 1 1 100px;
+    padding: 14px;
+    border-radius: 12px;
+    background: #f0fbff;
+    color: #0d7377;
+    font-weight: 600;
+    text-align: center;
+}
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.schedule-item {
+    background: #f8fbff;
+    border-radius: 12px;
+    padding: 14px;
+    border-left: 4px solid #00a8cc;
+    transition: background 0.2s ease;
+}
+
+.schedule-item:hover {
+    background: #eff9ff;
+}
+
+.schedule-time {
+    font-weight: 700;
+    color: #0d7377;
+    margin-bottom: 6px;
+}
+
+.schedule-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 4px;
+}
+
+.schedule-meta {
+    color: #5e7d8a;
+    font-size: 0.9rem;
+}
+
+.schedule-status {
+    font-weight: 700;
+    color: #14919b;
+}
+
+.appointment-status {
+    font-size: 0.9rem;
+    color: #14919b;
+    margin-top: 6px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* ===== TABLE SECTION (ROW B) ===== */
+.table-section {
+    margin-top: 0;
 }
 
 /* ===== BUTTONS ===== */
