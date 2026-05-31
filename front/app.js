@@ -267,6 +267,13 @@ function setupEventListeners() {
     });
 
     activityForm.addEventListener('submit', addActivity);
+    document.getElementById('quickAddBtn').addEventListener('click', addQuickActivity);
+    document.getElementById('quickActivityInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addQuickActivity();
+        }
+    });
 
     // Meeting Modal
     const meetingModal = document.getElementById('meetingModal');
@@ -377,6 +384,34 @@ function addActivity(e) {
     showToastNotification(translations[currentLanguage].addedNotification + activity, 'success');
     document.getElementById('activityForm').reset();
     document.getElementById('modal').style.display = 'none';
+    renderActivities();
+    updateProgress();
+}
+
+function addQuickActivity() {
+    const date = getDate();
+    const activity = document.getElementById('quickActivityInput').value.trim();
+    const time = document.getElementById('quickTimeInput').value;
+    const category = document.getElementById('quickCategoryInput').value;
+
+    if (!activity || !time) {
+        showToastNotification('Please enter activity and time.', 'warning');
+        return;
+    }
+
+    activities[date].push({
+        id: Date.now(),
+        activity,
+        time,
+        category,
+        done: false
+    });
+
+    showToastNotification(translations[currentLanguage].addedNotification + activity, 'success');
+    document.getElementById('quickActivityInput').value = '';
+    document.getElementById('quickTimeInput').value = '';
+    document.getElementById('quickCategoryInput').value = 'work';
+    document.getElementById('quickActivityInput').focus();
     renderActivities();
     updateProgress();
 }

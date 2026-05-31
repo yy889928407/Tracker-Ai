@@ -184,6 +184,57 @@ header {
     box-shadow: 0 0 10px rgba(0, 168, 204, 0.5);
 }
 
+.quick-add-activity {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quick-input,
+.quick-select {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d8e0;
+    font-size: 1rem;
+    background: #f8fafc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quick-input:focus,
+.quick-select:focus {
+    outline: none;
+    border-color: #14919b;
+    box-shadow: 0 0 8px rgba(20, 145, 155, 0.15);
+}
+
+.quick-input {
+    flex: 1 1 320px;
+    min-width: 200px;
+}
+
+.quick-select {
+    width: 170px;
+    min-width: 150px;
+}
+
+.quick-add-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #14919b;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.quick-add-btn:hover {
+    background: #0d7377;
+    transform: translateY(-1px);
+}
+
 /* ===== LAYOUT CONTAINER ===== */
 .layout-container {
     padding: 20px 30px;
