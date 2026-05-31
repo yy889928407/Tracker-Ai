@@ -302,8 +302,14 @@ function setupEventListeners() {
     document.getElementById('meetingTypeLearning').addEventListener('click', () => selectMeetingCategory('Learning'));
     document.getElementById('startSessionBtn').addEventListener('click', startCallBarSession);
     document.getElementById('scheduleMeetingBtn').addEventListener('click', () => {
-        document.getElementById('meetingModal').style.display = 'block';
+        const quickValue = document.getElementById('quickCallNumber').value.trim();
+        const meetingModal = document.getElementById('meetingModal');
         document.getElementById('meetingCategory').value = currentMeetingCategory;
+        document.getElementById('meetingChannel').value = currentMeetingChannel;
+        if (quickValue && quickValue.includes('@')) {
+            document.getElementById('meetingAttendees').value = quickValue;
+        }
+        meetingModal.style.display = 'block';
     });
     document.getElementById('toggleMuteBtn').addEventListener('click', toggleMute);
     document.getElementById('toggleCameraBtn').addEventListener('click', toggleCamera);
@@ -337,6 +343,101 @@ function closeMeetingModal() {
 
 function closeCallModal() {
     document.getElementById('callModal').style.display = 'none';
+}
+
+function selectCallChannel(channel) {
+    currentMeetingChannel = channel;
+    document.getElementById('channelPhoneBtn').classList.toggle('selected', channel === 'phone');
+    document.getElementById('channelPhoneBtn').setAttribute('aria-pressed', channel === 'phone');
+    document.getElementById('channelVideoBtn').classList.toggle('selected', channel === 'video');
+    document.getElementById('channelVideoBtn').setAttribute('aria-pressed', channel === 'video');
+
+    const input = document.getElementById('quickCallNumber');
+    if (channel === 'phone') {
+        input.placeholder = 'Enter phone number';
+    } else if (channel === 'video') {
+        input.placeholder = 'Enter meeting room or invitee email';
+    } else {
+        input.placeholder = 'Enter quick note or contact';
+    }
+}
+
+function selectMeetingCategory(category) {
+    currentMeetingCategory = category;
+    document.getElementById('meetingTypePersonal').classList.toggle('selected', category === 'Personal');
+    document.getElementById('meetingTypeBusiness').classList.toggle('selected', category === 'Business');
+    document.getElementById('meetingTypeLearning').classList.toggle('selected', category === 'Learning');
+    document.getElementById('meetingCategory').value = category;
+}
+
+function startCallBarSession() {
+    const quickValue = document.getElementById('quickCallNumber').value.trim();
+
+    if (currentMeetingChannel === 'phone') {
+        if (!quickValue) {
+            showToastNotification('Please enter a phone number to start a call.', 'warning');
+            return;
+        }
+        makeQuickCallByPhone(quickValue);
+        return;
+    }
+
+    const meetingModal = document.getElementById('meetingModal');
+    document.getElementById('meetingChannel').value = currentMeetingChannel;
+    document.getElementById('meetingCategory').value = currentMeetingCategory;
+
+    if (quickValue) {
+        const meetingTitleInput = document.getElementById('meetingTitle');
+        const meetingAttendeesInput = document.getElementById('meetingAttendees');
+        meetingTitleInput.value = currentMeetingChannel === 'video' ? `Video session with ${quickValue}` : `Quick meeting with ${quickValue}`;
+        if (quickValue.includes('@')) {
+            meetingAttendeesInput.value = quickValue;
+        }
+    }
+
+    meetingModal.style.display = 'block';
+    showToastNotification('Preparing meeting details. Fill in the meeting form and submit.', 'info');
+}
+
+function toggleMute() {
+    callMuted = !callMuted;
+    const btn = document.getElementById('toggleMuteBtn');
+    btn.textContent = callMuted ? '🔇' : '🎙';
+    btn.setAttribute('aria-pressed', callMuted);
+    showToastNotification(callMuted ? 'Microphone muted' : 'Microphone unmuted', 'info');
+}
+
+function toggleCamera() {
+    cameraActive = !cameraActive;
+    const btn = document.getElementById('toggleCameraBtn');
+    btn.textContent = cameraActive ? '📷' : '🚫';
+    btn.setAttribute('aria-pressed', cameraActive);
+    showToastNotification(cameraActive ? 'Camera enabled' : 'Camera disabled', 'info');
+}
+
+function joinMeeting(id) {
+    const date = getDate();
+    const meeting = meetings[date].find(m => m.id === id);
+    if (!meeting) {
+        showToastNotification('Meeting not found', 'error');
+        return;
+    }
+    if (meeting.link) {
+        window.open(meeting.link, '_blank');
+        showToastNotification('Opening meeting link...', 'info');
+    } else {
+        showToastNotification('No meeting link available. Please edit details.', 'warning');
+    }
+}
+
+function toggleMeetingStatus(id) {
+    const date = getDate();
+    const meeting = meetings[date].find(m => m.id === id);
+    if (!meeting) return;
+    meeting.completed = !meeting.completed;
+    renderMeetings();
+    renderSchedule();
+    updateProgress();
 }
 
 function setToday() {
@@ -458,6 +559,9 @@ function addMeeting(e) {
     });
 
     showNotification(translations[currentLanguage].meetingAdded, 'success');
+    if (attendees.trim()) {
+        sendMeetingEmail(attendees, title, time, duration, channel, description);
+    }
     document.getElementById('meetingForm').reset();
     closeMeetingModal();
     renderMeetings();
@@ -719,13 +823,14 @@ function sendEmail(email) {
     }
 }
 
-function sendMeetingEmail(attendees, title) {
+function sendMeetingEmail(attendees, title, time = '', duration = '', channel = '', description = '') {
     if (attendees) {
-        const subject = `Meeting: ${title}`;
-        const body = `Meeting: ${title}\n\nPlease confirm your attendance.`;
+        const subject = `Meeting confirmation: ${title}`;
+        const body = `Hello,\n\nYou are invited to the meeting "${title}" scheduled for ${time}.\nDuration: ${duration} minutes\nMeeting channel: ${channel}\n\nDetails:\n${description}\n\nPlease confirm your attendance.`;
         window.location.href = `mailto:${attendees}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        showToastNotification('Opening email client for confirmation', 'info');
     } else {
-        alert('No attendees specified');
+        showToastNotification('No attendees specified for confirmation email', 'warning');
     }
 }
 
