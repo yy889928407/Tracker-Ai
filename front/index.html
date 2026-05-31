@@ -16,6 +16,9 @@
                 <p id="subtitle">Business Meeting & Appointment Manager</p>
             </div>
             <div class="header-controls">
+                <button id="quickCallBtn" class="quick-call-btn" title="Quick Call">
+                    <i class="fas fa-phone-alt"></i> Quick Call
+                </button>
                 <select id="languageSelect" class="language-select">
                     <option value="en">English</option>
                     <option value="es">Español</option>
@@ -25,15 +28,26 @@
             </div>
         </header>
 
-        <!-- Date Selector -->
+        <!-- Date Selector with Calendar Navigation -->
         <div class="date-section">
-            <label for="dateInput" id="dateLabel">Select Date:</label>
-            <input type="date" id="dateInput" class="date-input">
-            <span id="displayDate" class="display-date"></span>
+            <button id="prevDayBtn" class="nav-btn nav-btn-prev" title="Previous Day">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="date-controls">
+                <label for="dateInput" id="dateLabel">Select Date:</label>
+                <input type="date" id="dateInput" class="date-input">
+                <span id="displayDate" class="display-date"></span>
+            </div>
+            <button id="nextDayBtn" class="nav-btn nav-btn-next" title="Next Day">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
 
         <!-- Notifications -->
         <div id="notificationBox" class="notification-box"></div>
+
+        <!-- Pop-up Toast Notifications -->
+        <div id="toastContainer" class="toast-container"></div>
 
         <!-- Achievement Progress -->
         <div class="progress-section">
@@ -255,6 +269,24 @@
                     </div>
                     <button type="submit" id="submitCallBtn" class="submit-btn">Schedule Call</button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Quick Call Modal -->
+        <div id="quickCallModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeQuickCallModal()">&times;</span>
+                <h2>Initiate Quick Call</h2>
+                <div id="scheduledCallsList" class="scheduled-calls-list">
+                    <!-- Scheduled calls will be listed here -->
+                </div>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <p style="color: #666; margin-bottom: 15px;">Or enter a phone number to call:</p>
+                    <div class="form-group">
+                        <input type="tel" id="quickPhoneInput" placeholder="+1 (555) 000-0000" style="width: 100%; padding: 10px; border: 2px solid #00a8cc; border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    <button onclick="makeQuickCall()" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #00a8cc 0%, #0d7377 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Call Now</button>
+                </div>
             </div>
         </div>
     </div>

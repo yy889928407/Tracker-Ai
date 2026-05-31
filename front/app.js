@@ -239,6 +239,13 @@ function setupEventListeners() {
         updateUI();
     });
 
+    // Navigation buttons
+    document.getElementById('prevDayBtn').addEventListener('click', goToPreviousDay);
+    document.getElementById('nextDayBtn').addEventListener('click', goToNextDay);
+
+    // Quick Call Button
+    document.getElementById('quickCallBtn').addEventListener('click', openQuickCallModal);
+
     // Language selector
     document.getElementById('languageSelect').addEventListener('change', (e) => {
         currentLanguage = e.target.value;
@@ -290,6 +297,7 @@ function setupEventListeners() {
         if (e.target === meetingModal) meetingModal.style.display = 'none';
         if (e.target === appointmentModal) appointmentModal.style.display = 'none';
         if (e.target === callModal) callModal.style.display = 'none';
+        if (e.target === document.getElementById('quickCallModal')) closeQuickCallModal();
     });
 }
 
@@ -366,7 +374,7 @@ function addActivity(e) {
         done: false
     });
 
-    showNotification(translations[currentLanguage].addedNotification + activity, 'success');
+    showToastNotification(translations[currentLanguage].addedNotification + activity, 'success');
     document.getElementById('activityForm').reset();
     document.getElementById('modal').style.display = 'none';
     renderActivities();
@@ -650,6 +658,116 @@ function showNotification(message, type = 'info') {
     setTimeout(() => {
         notification.remove();
     }, 4000);
+}
+
+// Pop-up Toast Notification System
+function showToastNotification(message, type = 'success') {
+    const toastContainer = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    
+    const icon = getToastIcon(type);
+    toast.innerHTML = `
+        <span class="toast-icon">${icon}</span>
+        <span class="toast-message">${message}</span>
+        <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 4000);
+}
+
+function getToastIcon(type) {
+    const icons = {
+        'success': '✓',
+        'error': '✕',
+        'warning': '⚠',
+        'info': 'ℹ'
+    };
+    return icons[type] || icons['info'];
+}
+
+// Calendar Navigation Functions
+function goToPreviousDay() {
+    const dateInput = document.getElementById('dateInput');
+    const currentDate = new Date(dateInput.value + 'T00:00:00');
+    currentDate.setDate(currentDate.getDate() - 1);
+    const newDate = currentDate.toISOString().split('T')[0];
+    dateInput.value = newDate;
+    loadData();
+    updateUI();
+}
+
+function goToNextDay() {
+    const dateInput = document.getElementById('dateInput');
+    const currentDate = new Date(dateInput.value + 'T00:00:00');
+    currentDate.setDate(currentDate.getDate() + 1);
+    const newDate = currentDate.toISOString().split('T')[0];
+    dateInput.value = newDate;
+    loadData();
+    updateUI();
+}
+
+// Quick Call Functionality
+function openQuickCallModal() {
+    const modal = document.getElementById('quickCallModal');
+    modal.style.display = 'block';
+    populateScheduledCalls();
+}
+
+function closeQuickCallModal() {
+    document.getElementById('quickCallModal').style.display = 'none';
+}
+
+function populateScheduledCalls() {
+    const date = getDate();
+    const list = document.getElementById('scheduledCallsList');
+    list.innerHTML = '';
+
+    if (!calls[date] || calls[date].length === 0) {
+        list.innerHTML = '<p style="text-align: center; color: #999;">No scheduled calls for today.</p>';
+        return;
+    }
+
+    calls[date].forEach(call => {
+        const div = document.createElement('div');
+        div.className = 'quick-call-item';
+        div.innerHTML = `
+            <div>
+                <div style="font-weight: 600; color: #0d7377;">${call.person}</div>
+                <div style="color: #666; font-size: 0.9rem;">☎ ${call.phone}</div>
+                <div style="color: #999; font-size: 0.85rem;">⏰ ${call.time}</div>
+            </div>
+            <button onclick="makeQuickCallByPhone('${call.phone}')" class="quick-call-action-btn">Call Now</button>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function makeQuickCall() {
+    const phone = document.getElementById('quickPhoneInput').value;
+    if (phone) {
+        makeQuickCallByPhone(phone);
+    } else {
+        showToastNotification('Please enter a phone number', 'warning');
+    }
+}
+
+function makeQuickCallByPhone(phone) {
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone) {
+        showToastNotification(`Initiating call to ${phone}...`, 'info');
+        window.location.href = `tel:${cleanPhone}`;
+        setTimeout(() => {
+            closeQuickCallModal();
+        }, 500);
+    }
 }
 
 function updateUI() {
