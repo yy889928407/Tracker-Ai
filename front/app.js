@@ -221,8 +221,11 @@ const translations = {
 let currentLanguage = 'en';
 let activities = {};
 let meetings = {};
-let appointments = {};
 let calls = {};
+let currentMeetingChannel = 'phone';
+let currentMeetingCategory = 'Personal';
+let callMuted = false;
+let cameraActive = true;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
@@ -286,11 +289,21 @@ function setupEventListeners() {
 
     meetingForm.addEventListener('submit', addMeeting);
 
-    // Appointment Modal
-    const appointmentModal = document.getElementById('appointmentModal');
-    const appointmentForm = document.getElementById('appointmentForm');
+    // Top Call Bar controls
+    document.getElementById('channelPhoneBtn').addEventListener('click', () => selectCallChannel('phone'));
+    document.getElementById('channelVideoBtn').addEventListener('click', () => selectCallChannel('video'));
+    document.getElementById('meetingTypePersonal').addEventListener('click', () => selectMeetingCategory('Personal'));
+    document.getElementById('meetingTypeBusiness').addEventListener('click', () => selectMeetingCategory('Business'));
+    document.getElementById('meetingTypeLearning').addEventListener('click', () => selectMeetingCategory('Learning'));
+    document.getElementById('startSessionBtn').addEventListener('click', startCallBarSession);
+    document.getElementById('scheduleMeetingBtn').addEventListener('click', () => {
+        document.getElementById('meetingModal').style.display = 'block';
+        document.getElementById('meetingCategory').value = currentMeetingCategory;
+    });
+    document.getElementById('toggleMuteBtn').addEventListener('click', toggleMute);
+    document.getElementById('toggleCameraBtn').addEventListener('click', toggleCamera);
 
-    appointmentForm.addEventListener('submit', addAppointment);
+    document.addEventListener('keydown', handleShortcutKeys);
 
     // Call Modal
     const callModal = document.getElementById('callModal');
@@ -302,7 +315,6 @@ function setupEventListeners() {
     window.addEventListener('click', (e) => {
         if (e.target === activityModal) activityModal.style.display = 'none';
         if (e.target === meetingModal) meetingModal.style.display = 'none';
-        if (e.target === appointmentModal) appointmentModal.style.display = 'none';
         if (e.target === callModal) callModal.style.display = 'none';
         if (e.target === document.getElementById('quickCallModal')) closeQuickCallModal();
     });
@@ -312,9 +324,6 @@ function closeMeetingModal() {
     document.getElementById('meetingModal').style.display = 'none';
 }
 
-function closeAppointmentModal() {
-    document.getElementById('appointmentModal').style.display = 'none';
-}
 
 function closeCallModal() {
     document.getElementById('callModal').style.display = 'none';
@@ -345,8 +354,6 @@ function updateLanguage() {
     document.getElementById('addMeetingBtn').textContent = t.addMeetingBtn;
     document.getElementById('addActivityBtn').textContent = t.addActivityBtn;
     document.getElementById('meetingsBoxTitle').textContent = t.meetingsBoxTitle;
-    document.getElementById('appointmentsBoxTitle').textContent = t.appointmentsBoxTitle;
-    document.getElementById('callsBoxTitle').textContent = t.callsBoxTitle;
     document.getElementById('thDone').textContent = t.thDone;
     document.getElementById('thActivity').textContent = t.thActivity;
     document.getElementById('thTime').textContent = t.thTime;
@@ -362,7 +369,6 @@ function loadData() {
     const date = getDate();
     if (!activities[date]) activities[date] = [];
     if (!meetings[date]) meetings[date] = [];
-    if (!appointments[date]) appointments[date] = [];
     if (!calls[date]) calls[date] = [];
 }
 
@@ -442,33 +448,6 @@ function addMeeting(e) {
     renderMeetings();
 }
 
-function addAppointment(e) {
-    e.preventDefault();
-    const date = getDate();
-    const title = document.getElementById('appointmentTitle').value;
-    const time = document.getElementById('appointmentTime').value;
-    const location = document.getElementById('appointmentLocation').value;
-    const contact = document.getElementById('appointmentContact').value;
-    const reminder = document.getElementById('appointmentReminder').checked;
-
-    appointments[date].push({
-        id: Date.now(),
-        title,
-        time,
-        location,
-        contact,
-        reminder,
-        completed: false
-    });
-
-    showNotification(translations[currentLanguage].appointmentAdded, 'success');
-    document.getElementById('appointmentForm').reset();
-    closeAppointmentModal();
-    renderAppointments();
-    renderSchedule();
-    updateProgress();
-}
-
 function addCall(e) {
     e.preventDefault();
     const date = getDate();
@@ -516,31 +495,6 @@ function renderMeetings() {
     });
 }
 
-function renderAppointments() {
-    const date = getDate();
-    const list = document.getElementById('appointmentsList');
-    const count = document.getElementById('appointmentCount');
-    list.innerHTML = '';
-    count.textContent = appointments[date].length;
-
-    appointments[date].forEach(apt => {
-        const div = document.createElement('div');
-        div.className = 'appointment-item';
-        div.innerHTML = `
-            <div class="appointment-time">🕐 ${apt.time}</div>
-            <div class="appointment-title">${apt.title}</div>
-            <div class="appointment-location">📍 ${apt.location || 'Not specified'}</div>
-            <div class="appointment-status">Status: ${apt.completed ? 'Completed' : 'Pending'}</div>
-            <div class="item-actions">
-                <button class="action-btn status-btn" onclick="toggleAppointment(${apt.id})">${apt.completed ? 'Mark Pending' : 'Mark Completed'}</button>
-                <button class="action-btn email-btn" onclick="sendEmail('${apt.contact}')">📧 Email</button>
-                <button class="action-btn delete-btn" onclick="deleteAppointment(${apt.id})">🗑 Delete</button>
-            </div>
-        `;
-        list.appendChild(div);
-    });
-}
-
 function renderSchedule() {
     const date = getDate();
     const list = document.getElementById('scheduleList');
@@ -552,18 +506,8 @@ function renderSchedule() {
             time: meeting.time,
             type: 'Meeting',
             title: meeting.title,
-            details: meeting.type,
-            status: 'Scheduled'
-        });
-    });
-
-    appointments[date].forEach(apt => {
-        items.push({
-            time: apt.time,
-            type: 'Appointment',
-            title: apt.title,
-            details: apt.location || 'No location',
-            status: apt.completed ? 'Completed' : 'Pending'
+            details: meeting.typeTag || meeting.channel,
+            status: meeting.completed ? 'Completed' : 'Scheduled'
         });
     });
 
@@ -598,17 +542,6 @@ function renderSchedule() {
         `;
         list.appendChild(div);
     });
-}
-
-function toggleAppointment(id) {
-    const date = getDate();
-    const appointment = appointments[date].find(a => a.id === id);
-    if (appointment) {
-        appointment.completed = !appointment.completed;
-        renderAppointments();
-        renderSchedule();
-        updateProgress();
-    }
 }
 
 function renderCalls() {
@@ -707,14 +640,6 @@ function deleteMeeting(id) {
     renderSchedule();
 }
 
-function deleteAppointment(id) {
-    const date = getDate();
-    appointments[date] = appointments[date].filter(a => a.id !== id);
-    renderAppointments();
-    renderSchedule();
-    updateProgress();
-}
-
 function deleteCall(id) {
     const date = getDate();
     calls[date] = calls[date].filter(c => c.id !== id);
@@ -748,23 +673,34 @@ function initiateCall(phone) {
 function updateProgress() {
     const date = getDate();
     const activityItems = activities[date] || [];
-    const appointmentItems = appointments[date] || [];
+    const meetingItems = meetings[date] || [];
 
     const completedActivities = activityItems.filter(a => a.done).length;
-    const completedAppointments = appointmentItems.filter(a => a.completed).length;
-    const totalItems = activityItems.length + appointmentItems.length;
-    const completedItems = completedActivities + completedAppointments;
-    const percent = totalItems === 0 ? 0 : Math.round((completedItems / totalItems) * 100);
+    const completedMeetings = meetingItems.filter(m => m.completed).length;
+    const weightedActivities = activityItems.length;
+    const weightedMeetings = meetingItems.reduce((sum, meeting) => {
+        const weight = meeting.typeTag === 'Business' ? 2 : 1;
+        return sum + weight;
+    }, 0);
+
+    const totalWeight = weightedActivities + weightedMeetings;
+    const completedWeight = completedActivities + meetingItems.reduce((sum, meeting) => {
+        if (meeting.completed) {
+            return sum + (meeting.typeTag === 'Business' ? 2 : 1);
+        }
+        return sum;
+    }, 0);
+    const percent = totalWeight === 0 ? 0 : Math.round((completedWeight / totalWeight) * 100);
 
     document.getElementById('progressFill').style.width = percent + '%';
     document.getElementById('progressPercent').textContent = percent + '%';
 
     if (document.getElementById('trackerPending')) {
-        document.getElementById('trackerPending').textContent = totalItems - completedItems;
-        document.getElementById('trackerCompleted').textContent = completedItems;
+        document.getElementById('trackerPending').textContent = totalWeight - completedWeight;
+        document.getElementById('trackerCompleted').textContent = completedWeight;
         const now = new Date().toISOString().substr(11, 5);
         const overdueCount = activityItems.filter(a => a.time && a.time < now && !a.done).length +
-            appointmentItems.filter(a => a.time && a.time < now && !a.completed).length;
+            meetingItems.filter(m => m.time && m.time < now && !m.completed).length;
         document.getElementById('trackerOverdue').textContent = overdueCount;
     }
 }

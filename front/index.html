@@ -43,6 +43,32 @@
             </button>
         </div>
 
+        <!-- Top Call Bar -->
+        <div class="top-call-bar" role="region" aria-label="Quick call and meeting controls">
+            <div class="call-left">
+                <button id="channelPhoneBtn" class="call-icon-btn selected" aria-pressed="true" aria-label="Phone channel">📞</button>
+                <button id="channelVideoBtn" class="call-icon-btn" aria-pressed="false" aria-label="Video channel">🎥</button>
+            </div>
+            <div class="call-center">
+                <div class="call-input-group">
+                    <label for="quickCallNumber" class="sr-only">Phone number</label>
+                    <input type="tel" id="quickCallNumber" class="call-input" placeholder="Enter phone number">
+                </div>
+                <div class="meeting-type-group" role="radiogroup" aria-label="Meeting type selector">
+                    <button type="button" class="meeting-type-btn selected" data-type="Personal" id="meetingTypePersonal">Personal</button>
+                    <button type="button" class="meeting-type-btn" data-type="Business" id="meetingTypeBusiness">Business</button>
+                    <button type="button" class="meeting-type-btn" data-type="Learning" id="meetingTypeLearning">Learning</button>
+                </div>
+            </div>
+            <div class="call-right">
+                <button id="startSessionBtn" class="primary-btn">Start</button>
+                <button id="scheduleMeetingBtn" class="secondary-btn">Schedule</button>
+                <button id="toggleMuteBtn" class="icon-btn" aria-label="Toggle mute" aria-pressed="false">🔇</button>
+                <button id="toggleCameraBtn" class="icon-btn" aria-label="Toggle camera" aria-pressed="false">📷</button>
+                <div class="call-badge" id="callBarBadge" aria-live="polite" aria-label="Pending notifications">0</div>
+            </div>
+        </div>
+
         <!-- Notifications -->
         <div id="notificationBox" class="notification-box"></div>
 
@@ -89,17 +115,19 @@
                         </div>
                     </div>
 
-                    <div class="plan-box appointment-box">
-                        <div class="box-header">
-                            <h3 id="appointmentsBoxTitle">Appointments</h3>
-                            <span class="appointment-count" id="appointmentCount">0</span>
-                        </div>
-                        <div id="appointmentsList" class="items-list">
-                            <!-- Appointments will be added here -->
-                        </div>
-                    </div>
-
                     <div class="plan-box tracker-box">
+                        <div class="box-header">
+                            <h3 id="actionsTitle">Action Tracker</h3>
+                            <button id="addActivityBtn" class="box-action-btn">+ Add</button>
+                        </div>
+                        <div class="tracker-summary">
+                            <div class="summary-item"><strong id="trackerPending">0</strong> pending</div>
+                            <div class="summary-item"><strong id="trackerCompleted">0</strong> completed</div>
+                            <div class="summary-item"><strong id="trackerOverdue">0</strong> overdue</div>
+                        </div>
+                        <div class="table-section">
+                            <div class="table-container">
+                                <table class="activities-table">
                         <div class="box-header">
                             <h3 id="actionsTitle">Action Tracker</h3>
                             <button id="addActivityBtn" class="box-action-btn">+ Add</button>
@@ -184,12 +212,20 @@
                         <input type="text" id="meetingAttendees" placeholder="email1@example.com, email2@example.com">
                     </div>
                     <div class="form-group">
-                        <label for="meetingType" id="labelMeetingType">Meeting Type:</label>
-                        <select id="meetingType" required>
+                        <label for="meetingChannel" id="labelMeetingType">Meeting Channel:</label>
+                        <select id="meetingChannel" required>
                             <option value="in-person">In-Person</option>
-                            <option value="video-call">Video Call</option>
-                            <option value="phone-call">Phone Call</option>
+                            <option value="video">Video Call</option>
+                            <option value="phone">Phone Call</option>
                             <option value="virtual">Virtual Meeting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="meetingCategory" id="labelMeetingCategory">Meeting Category:</label>
+                        <select id="meetingCategory" required>
+                            <option value="Personal">Personal</option>
+                            <option value="Business">Business</option>
+                            <option value="Learning">Learning</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -197,39 +233,6 @@
                         <textarea id="meetingDescription" placeholder="Meeting details..." rows="3"></textarea>
                     </div>
                     <button type="submit" id="submitMeetingBtn" class="submit-btn">Add Meeting</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Appointment Modal -->
-        <div id="appointmentModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeAppointmentModal()">&times;</span>
-                <h2 id="appointmentModalTitle">Add Appointment</h2>
-                <form id="appointmentForm">
-                    <div class="form-group">
-                        <label for="appointmentTitle" id="labelAppointmentTitle">Appointment Title:</label>
-                        <input type="text" id="appointmentTitle" placeholder="Enter appointment title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentTime" id="labelAppointmentTime">Time:</label>
-                        <input type="time" id="appointmentTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentLocation" id="labelAppointmentLocation">Location:</label>
-                        <input type="text" id="appointmentLocation" placeholder="Enter location">
-                    </div>
-                    <div class="form-group">
-                        <label for="appointmentContact" id="labelAppointmentContact">Contact Email:</label>
-                        <input type="email" id="appointmentContact" placeholder="contact@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="appointmentReminder">
-                            <span id="labelReminder">Set reminder (15 min before)</span>
-                        </label>
-                    </div>
-                    <button type="submit" id="submitAppointmentBtn" class="submit-btn">Add Appointment</button>
                 </form>
             </div>
         </div>
