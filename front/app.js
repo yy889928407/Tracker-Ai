@@ -258,7 +258,7 @@ function setupEventListeners() {
     // Activity Modal
     const activityModal = document.getElementById('modal');
     const addActivityBtn = document.getElementById('addActivityBtn');
-    const closeActivityBtn = document.querySelector('.close');
+    const closeActivityBtn = document.querySelector('#modal .close');
     const activityForm = document.getElementById('activityForm');
 
     addActivityBtn.addEventListener('click', () => {
@@ -281,10 +281,15 @@ function setupEventListeners() {
     // Meeting Modal
     const meetingModal = document.getElementById('meetingModal');
     const addMeetingBtn = document.getElementById('addMeetingBtn');
+    const closeMeetingBtn = document.querySelector('#meetingModal .close');
     const meetingForm = document.getElementById('meetingForm');
 
     addMeetingBtn.addEventListener('click', () => {
         meetingModal.style.display = 'block';
+    });
+
+    closeMeetingBtn.addEventListener('click', () => {
+        meetingModal.style.display = 'none';
     });
 
     meetingForm.addEventListener('submit', addMeeting);
@@ -307,7 +312,12 @@ function setupEventListeners() {
 
     // Call Modal
     const callModal = document.getElementById('callModal');
+    const closeCallBtn = document.querySelector('#callModal .close');
     const callForm = document.getElementById('callForm');
+
+    closeCallBtn.addEventListener('click', () => {
+        callModal.style.display = 'none';
+    });
 
     callForm.addEventListener('submit', addCall);
 
@@ -419,6 +429,7 @@ function addQuickActivity() {
     document.getElementById('quickCategoryInput').value = 'work';
     document.getElementById('quickActivityInput').focus();
     renderActivities();
+    renderActivityPlan();
     updateProgress();
 }
 
@@ -429,7 +440,8 @@ function addMeeting(e) {
     const time = document.getElementById('meetingTime').value;
     const duration = document.getElementById('meetingDuration').value;
     const attendees = document.getElementById('meetingAttendees').value;
-    const type = document.getElementById('meetingType').value;
+    const channel = document.getElementById('meetingChannel').value;
+    const category = document.getElementById('meetingCategory').value;
     const description = document.getElementById('meetingDescription').value;
 
     meetings[date].push({
@@ -438,14 +450,19 @@ function addMeeting(e) {
         time,
         duration,
         attendees,
-        type,
-        description
+        channel,
+        typeTag: category,
+        description,
+        completed: false,
+        link: channel === 'video' ? 'https://meet.google.com/new' : ''
     });
 
     showNotification(translations[currentLanguage].meetingAdded, 'success');
     document.getElementById('meetingForm').reset();
     closeMeetingModal();
     renderMeetings();
+    renderSchedule();
+    updateProgress();
 }
 
 function addCall(e) {
@@ -480,14 +497,23 @@ function renderMeetings() {
     count.textContent = meetings[date].length;
 
     meetings[date].forEach(meeting => {
+        const channelIcon = meeting.channel === 'video' ? '🎥' : meeting.channel === 'phone' ? '📞' : meeting.channel === 'virtual' ? '🌐' : '📍';
+        const statusLabel = meeting.completed ? 'Completed' : 'Upcoming';
         const div = document.createElement('div');
-        div.className = 'meeting-item';
+        div.className = `meeting-item ${meeting.completed ? 'meeting-completed' : ''}`;
         div.innerHTML = `
-            <div class="meeting-time">🕐 ${meeting.time}</div>
+            <div class="meeting-top-row">
+                <div class="meeting-time">${channelIcon} ${meeting.time}</div>
+                <span class="meeting-tag ${meeting.typeTag.toLowerCase()}">${meeting.typeTag}</span>
+            </div>
             <div class="meeting-title">${meeting.title}</div>
-            <div class="meeting-type">Type: ${meeting.type}</div>
+            <div class="meeting-meta">${meeting.attendees || 'No attendees specified'}</div>
+            <div class="meeting-description">${meeting.description || ''}</div>
+            <div class="meeting-status">${statusLabel}</div>
             <div class="item-actions">
-                <button class="action-btn email-btn" onclick="sendMeetingEmail('${meeting.attendees}', '${meeting.title}')">📧 Email</button>
+                ${meeting.channel === 'video' ? `<button class="action-btn join-btn" onclick="joinMeeting(${meeting.id})">Join</button>` : ''}
+                ${meeting.channel === 'phone' && meeting.attendees ? `<button class="action-btn call-btn" onclick="initiateCall('${meeting.attendees}')">☎ Call</button>` : ''}
+                <button class="action-btn status-btn" onclick="toggleMeetingStatus(${meeting.id})">${meeting.completed ? 'Mark Upcoming' : 'Mark Done'}</button>
                 <button class="action-btn delete-btn" onclick="deleteMeeting(${meeting.id})">🗑 Delete</button>
             </div>
         `;
@@ -613,6 +639,42 @@ function renderActivities() {
     });
 }
 
+function renderActivityPlan() {
+    const date = getDate();
+    const planList = document.getElementById('activityPlanList');
+    planList.innerHTML = '';
+
+    if (!activities[date] || activities[date].length === 0) {
+        planList.innerHTML = '<div style="text-align: center; color: #a0b5ba; padding: 20px; font-size: 0.95rem;">No to-do items yet. Add one above!</div>';
+        return;
+    }
+
+    activities[date].forEach(item => {
+        const div = document.createElement('div');
+        div.className = `activity-plan-item ${item.done ? 'completed' : ''}`;
+        
+        const span = document.createElement('span');
+        span.className = 'activity-plan-text';
+        span.textContent = `${item.time} - ${item.activity}`;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'activity-plan-remove';
+        removeBtn.textContent = '✕';
+        removeBtn.addEventListener('click', () => deleteActivity(item.id));
+        
+        div.appendChild(span);
+        div.appendChild(removeBtn);
+        
+        div.addEventListener('click', (e) => {
+            if (e.target !== removeBtn) {
+                toggleActivity(item.id);
+            }
+        });
+        
+        planList.appendChild(div);
+    });
+}
+
 function toggleActivity(id) {
     const date = getDate();
     const activity = activities[date].find(a => a.id === id);
@@ -622,6 +684,7 @@ function toggleActivity(id) {
             showNotification(translations[currentLanguage].completedNotification + activity.activity, 'success');
         }
         renderActivities();
+        renderActivityPlan();
         updateProgress();
     }
 }
@@ -630,6 +693,7 @@ function deleteActivity(id) {
     const date = getDate();
     activities[date] = activities[date].filter(a => a.id !== id);
     renderActivities();
+    renderActivityPlan();
     updateProgress();
 }
 
@@ -832,6 +896,7 @@ function updateUI() {
     updateDateDisplay();
     loadData();
     renderActivities();
+    renderActivityPlan();
     renderMeetings();
     renderCalls();
     renderSchedule();

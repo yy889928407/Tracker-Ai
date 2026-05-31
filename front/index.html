@@ -115,22 +115,33 @@
                         </div>
                     </div>
 
+                    <div class="plan-box activity-plan-box">
+                        <div class="box-header">
+                            <h3 id="planBoxTitle">📝 Plan / To-Do</h3>
+                            <button id="addActivityBtn" class="box-action-btn">+ Add</button>
+                        </div>
+                        <div class="quick-activity-inputs">
+                            <input type="text" id="quickActivityInput" class="quick-input" placeholder="Quick task..." maxlength="80">
+                            <div class="quick-input-row">
+                                <input type="time" id="quickTimeInput" class="quick-input-time">
+                                <select id="quickCategoryInput" class="quick-input-category">
+                                    <option value="work">Work</option>
+                                    <option value="health">Health</option>
+                                    <option value="learning">Learning</option>
+                                    <option value="personal">Personal</option>
+                                </select>
+                                <button id="quickAddBtn" class="quick-add-btn">✓</button>
+                            </div>
+                        </div>
+                        <div id="activityPlanList" class="items-list activity-plan-list">
+                            <!-- Quick activity entries will be added here -->
+                        </div>
+                    </div>
+
                     <div class="plan-box tracker-box">
                         <div class="box-header">
                             <h3 id="actionsTitle">Action Tracker</h3>
-                            <button id="addActivityBtn" class="box-action-btn">+ Add</button>
-                        </div>
-                        <div class="tracker-summary">
-                            <div class="summary-item"><strong id="trackerPending">0</strong> pending</div>
-                            <div class="summary-item"><strong id="trackerCompleted">0</strong> completed</div>
-                            <div class="summary-item"><strong id="trackerOverdue">0</strong> overdue</div>
-                        </div>
-                        <div class="table-section">
-                            <div class="table-container">
-                                <table class="activities-table">
-                        <div class="box-header">
-                            <h3 id="actionsTitle">Action Tracker</h3>
-                            <button id="addActivityBtn" class="box-action-btn">+ Add</button>
+                            <span class="box-meta"><strong id="trackerItemCount">0</strong> items</span>
                         </div>
                         <div class="tracker-summary">
                             <div class="summary-item"><strong id="trackerPending">0</strong> pending</div>
