@@ -833,7 +833,6 @@ function updateUI() {
     loadData();
     renderActivities();
     renderMeetings();
-    renderAppointments();
     renderCalls();
     renderSchedule();
     updateProgress();
