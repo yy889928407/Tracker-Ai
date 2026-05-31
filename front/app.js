@@ -284,13 +284,9 @@ function setupEventListeners() {
     const closeMeetingBtn = document.querySelector('#meetingModal .close');
     const meetingForm = document.getElementById('meetingForm');
 
-    addMeetingBtn.addEventListener('click', () => {
-        meetingModal.style.display = 'block';
-    });
+    addMeetingBtn.addEventListener('click', () => openMeetingModal());
 
-    closeMeetingBtn.addEventListener('click', () => {
-        meetingModal.style.display = 'none';
-    });
+    closeMeetingBtn.addEventListener('click', () => closeMeetingModal());
 
     meetingForm.addEventListener('submit', addMeeting);
 
@@ -303,13 +299,10 @@ function setupEventListeners() {
     document.getElementById('startSessionBtn').addEventListener('click', startCallBarSession);
     document.getElementById('scheduleMeetingBtn').addEventListener('click', () => {
         const quickValue = document.getElementById('quickCallNumber').value.trim();
-        const meetingModal = document.getElementById('meetingModal');
-        document.getElementById('meetingCategory').value = currentMeetingCategory;
-        document.getElementById('meetingChannel').value = currentMeetingChannel;
+        openMeetingModal();
         if (quickValue && quickValue.includes('@')) {
             document.getElementById('meetingAttendees').value = quickValue;
         }
-        meetingModal.style.display = 'block';
     });
     document.getElementById('toggleMuteBtn').addEventListener('click', toggleMute);
     document.getElementById('toggleCameraBtn').addEventListener('click', toggleCamera);
@@ -337,9 +330,22 @@ function setupEventListeners() {
 }
 
 function closeMeetingModal() {
-    document.getElementById('meetingModal').style.display = 'none';
+    const meetingModal = document.getElementById('meetingModal');
+    meetingModal.style.display = 'none';
 }
 
+function openMeetingModal() {
+    const meetingModal = document.getElementById('meetingModal');
+    const form = document.getElementById('meetingForm');
+    loadData();
+    form.reset();
+    document.getElementById('meetingChannel').value = currentMeetingChannel;
+    document.getElementById('meetingCategory').value = currentMeetingCategory;
+    document.getElementById('meetingTitle').value = '';
+    document.getElementById('meetingAttendees').value = '';
+    document.getElementById('meetingDescription').value = '';
+    meetingModal.style.display = 'block';
+}
 
 function closeCallModal() {
     document.getElementById('callModal').style.display = 'none';
@@ -537,14 +543,20 @@ function addQuickActivity() {
 function addMeeting(e) {
     e.preventDefault();
     const date = getDate();
-    const title = document.getElementById('meetingTitle').value;
+    const title = document.getElementById('meetingTitle').value.trim();
     const time = document.getElementById('meetingTime').value;
     const duration = document.getElementById('meetingDuration').value;
-    const attendees = document.getElementById('meetingAttendees').value;
+    const attendees = document.getElementById('meetingAttendees').value.trim();
     const channel = document.getElementById('meetingChannel').value;
     const category = document.getElementById('meetingCategory').value;
-    const description = document.getElementById('meetingDescription').value;
+    const description = document.getElementById('meetingDescription').value.trim();
 
+    if (!title || !time || !duration) {
+        showToastNotification('Please complete title, time and duration before saving.', 'warning');
+        return;
+    }
+
+    loadData();
     meetings[date].push({
         id: Date.now(),
         title,
@@ -559,14 +571,13 @@ function addMeeting(e) {
     });
 
     showNotification(translations[currentLanguage].meetingAdded, 'success');
-    if (attendees.trim()) {
+    showToastNotification(`Meeting booked: ${title} at ${time}`, 'success');
+    if (attendees) {
         sendMeetingEmail(attendees, title, time, duration, channel, description);
     }
     document.getElementById('meetingForm').reset();
     closeMeetingModal();
-    renderMeetings();
-    renderSchedule();
-    updateProgress();
+    updateUI();
 }
 
 function addCall(e) {
