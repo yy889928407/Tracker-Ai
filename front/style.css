@@ -1062,26 +1062,29 @@ header {
 }
 
 .submit-btn {
-    padding: 14px 28px;
+    width: 100%;
+    padding: 16px 28px;
     background: linear-gradient(135deg, #0d7377 0%, #14919b 50%, #00a8cc 100%);
     color: white;
     border: none;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(13, 115, 119, 0.3);
 }
 
 .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(13, 115, 119, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(13, 115, 119, 0.5);
 }
 
 .submit-btn:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 115, 119, 0.3);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

@@ -24,6 +24,7 @@
                     <option value="es">Español</option>
                     <option value="fr">Français</option>
                     <option value="de">Deutsch</option>
+                    <option value="ki">Kiswahili</option>
                 </select>
             </div>
         </header>
@@ -90,7 +91,7 @@
         <div class="layout-container">
             <section class="row-section row-a">
                 <div class="row-title">
-                    <h2 id="plansTitle">📊 Daily Dashboard</h2>
+                    <h2 id="plansTitle">T-space</h2>
                 </div>
 
                 <div class="dashboard-grid">
@@ -243,7 +244,10 @@
                         <label for="meetingDescription" id="labelMeetingDescription">Description:</label>
                         <textarea id="meetingDescription" placeholder="Meeting details..." rows="3"></textarea>
                     </div>
-                    <button type="submit" id="submitMeetingBtn" class="submit-btn">Add Meeting</button>
+                    <button type="submit" id="submitMeetingBtn" class="submit-btn">✓ Confirm & Book Meeting</button>
+                    <div id="meetingConfirmBanner" class="confirm-banner" style="display: none; margin-top: 20px; padding: 15px; background: #d4edda; border: 2px solid #28a745; border-radius: 8px; color: #155724; text-align: center; font-weight: 700;">
+                        ✓ Meeting Confirmed and Booked!
+                    </div>
                 </form>
             </div>
         </div>
