@@ -556,7 +556,7 @@ function addQuickActivity() {
 
 function addMeeting(e) {
     e.preventDefault();
-    const date = getDate();
+    const meetingDate = document.getElementById('meetingDate').value;
     const title = document.getElementById('meetingTitle').value.trim();
     const time = document.getElementById('meetingTime').value;
     const duration = document.getElementById('meetingDuration').value;
@@ -566,19 +566,16 @@ function addMeeting(e) {
     const description = document.getElementById('meetingDescription').value.trim();
     const approved = document.getElementById('approveMeeting').checked;
 
-    if (!approved) {
-        showToastNotification('Please approve the meeting before saving.', 'warning');
+    if (!meetingDate || !title || !time || !duration) {
+        showToastNotification('Please complete date, title, time and duration before saving.', 'warning');
         return;
     }
 
-    if (!title || !time || !duration) {
-        showToastNotification('Please complete title, time and duration before saving.', 'warning');
-        return;
-    }
+    if (!meetings[meetingDate]) meetings[meetingDate] = [];
 
-    loadData();
-    meetings[date].push({
+    meetings[meetingDate].push({
         id: Date.now(),
+        date: meetingDate,
         title,
         time,
         duration,
@@ -586,18 +583,24 @@ function addMeeting(e) {
         channel,
         typeTag: category,
         description,
+        status: approved ? 'Approved' : 'Pending',
         completed: false,
         link: channel === 'video' ? 'https://meet.google.com/new' : ''
     });
 
-    showNotification(translations[currentLanguage].meetingAdded, 'success');
-    showToastNotification(`Meeting booked: ${title} at ${time}`, 'success');
+    const notificationKey = approved ? 'meetingApproved' : 'meetingPending';
+    showNotification(translations[currentLanguage][notificationKey] || 'Meeting saved', 'success');
+    showToastNotification(`${approved ? 'Approved' : 'Saved as pending'}: ${title} on ${meetingDate} at ${time}`, 'success');
+
     if (attendees) {
-        sendMeetingEmail(attendees, title, time, duration, channel, description);
+        sendMeetingEmail(attendees, title, time, duration, channel, description, approved);
     }
+
     document.getElementById('meetingForm').reset();
     closeMeetingModal();
-    updateUI();
+    if (meetingDate === getDate()) {
+        updateUI();
+    }
 }
 
 function addCall(e) {
