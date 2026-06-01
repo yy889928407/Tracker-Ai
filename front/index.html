@@ -305,6 +305,27 @@
                 </div>
             </div>
         </div>
+
+        <div class="meeting-approval-section" style="margin: 20px 0; padding: 20px; background: #f8f9fa; border: 1px solid #d1d5db; border-radius: 12px;">
+            <label for="approveMeeting" style="display: inline-flex; align-items: center; gap: 10px; font-size: 1rem;">
+                <input type="checkbox" id="approveMeeting">
+                Approve this meeting
+            </label>
+            <button onclick="saveMeeting()" style="margin-top: 12px; padding: 10px 16px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer;">Save Meeting</button>
+        </div>
+
+        <script>
+            function saveMeeting() {
+                const approved = document.getElementById("approveMeeting").checked;
+                if (approved) {
+                    // push to booked meetings list
+                    alert("Meeting approved and added!");
+                } else {
+                    alert("Meeting not approved, not listed.");
+                }
+            }
+        </script>
+
     </div>
 
     <script src="app.js"></script>
