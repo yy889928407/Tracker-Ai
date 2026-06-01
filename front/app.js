@@ -51,6 +51,8 @@ const translations = {
         callBtn: "☎ Call",
         emailBtn: "📧 Email",
         meetingAdded: "Meeting added successfully",
+        meetingApproved: "Meeting approved and booked",
+        meetingPending: "Meeting saved as pending approval",
         appointmentAdded: "Appointment added successfully",
         callScheduled: "Call scheduled successfully"
     },
@@ -339,8 +341,10 @@ function openMeetingModal() {
     const form = document.getElementById('meetingForm');
     loadData();
     form.reset();
+    document.getElementById('meetingDate').value = getDate();
     document.getElementById('meetingChannel').value = currentMeetingChannel;
     document.getElementById('meetingCategory').value = currentMeetingCategory;
+    document.getElementById('approveMeeting').checked = false;
     document.getElementById('meetingTitle').value = '';
     document.getElementById('meetingAttendees').value = '';
     document.getElementById('meetingDescription').value = '';
@@ -465,17 +469,27 @@ function updateLanguage() {
     document.getElementById('appTitle').textContent = t.appTitle;
     document.getElementById('subtitle').textContent = t.subtitle;
     document.getElementById('dateLabel').textContent = t.dateLabel;
-    document.getElementById('progressLabel').textContent = t.progressLabel;
-    document.getElementById('plansTitle').textContent = t.plansTitle;
-    document.getElementById('actionsTitle').textContent = t.actionsTitle;
-    document.getElementById('addMeetingBtn').textContent = t.addMeetingBtn;
-    document.getElementById('addActivityBtn').textContent = t.addActivityBtn;
-    document.getElementById('meetingsBoxTitle').textContent = t.meetingsBoxTitle;
-    document.getElementById('thDone').textContent = t.thDone;
-    document.getElementById('thActivity').textContent = t.thActivity;
-    document.getElementById('thTime').textContent = t.thTime;
-    document.getElementById('thCategory').textContent = t.thCategory;
-    document.getElementById('thActions').textContent = t.thActions;
+document.getElementById('progressLabel').textContent = t('progressLabel');
+        document.getElementById('plansTitle').textContent = t('plansTitle');
+        document.getElementById('actionsTitle').textContent = t('actionsTitle');
+        document.getElementById('addMeetingBtn').textContent = t('addMeetingBtn');
+        document.getElementById('addActivityBtn').textContent = t('addActivityBtn');
+        document.getElementById('meetingsBoxTitle').textContent = t('meetingsBoxTitle');
+        document.getElementById('thDone').textContent = t('thDone');
+        document.getElementById('thActivity').textContent = t('thActivity');
+        document.getElementById('thTime').textContent = t('thTime');
+        document.getElementById('thCategory').textContent = t('thCategory');
+        document.getElementById('thActions').textContent = t('thActions');
+        document.getElementById('submitMeetingBtn').textContent = t('submitMeetingBtn');
+        document.getElementById('labelMeetingDate').textContent = t('labelMeetingDate');
+        document.getElementById('labelApproveMeeting').textContent = t('labelApproveMeeting');
+        document.getElementById('labelMeetingTitle').textContent = t('labelMeetingTitle');
+        document.getElementById('labelMeetingTime').textContent = t('labelMeetingTime');
+        document.getElementById('labelMeetingDuration').textContent = t('labelMeetingDuration');
+        document.getElementById('labelMeetingAttendees').textContent = t('labelMeetingAttendees');
+        document.getElementById('labelMeetingType').textContent = t('labelMeetingType');
+        document.getElementById('labelMeetingCategory').textContent = t('labelMeetingCategory');
+        document.getElementById('labelMeetingDescription').textContent = t('labelMeetingDescription');
 }
 
 function getDate() {
@@ -615,9 +629,15 @@ function renderMeetings() {
     const list = document.getElementById('meetingsList');
     const count = document.getElementById('meetingCount');
     list.innerHTML = '';
-    count.textContent = meetings[date].length;
+    const approvedMeetings = (meetings[date] || []).filter(meeting => meeting.status === 'Approved');
+    count.textContent = approvedMeetings.length;
 
-    meetings[date].forEach(meeting => {
+    if (approvedMeetings.length === 0) {
+        list.innerHTML = '<div class="meeting-empty" style="color:#777; padding:20px; text-align:center;">No approved meetings yet.</div>';
+        return;
+    }
+
+    approvedMeetings.forEach(meeting => {
         const channelIcon = meeting.channel === 'video' ? '🎥' : meeting.channel === 'phone' ? '📞' : meeting.channel === 'virtual' ? '🌐' : '📍';
         const statusLabel = meeting.completed ? 'Completed' : 'Upcoming';
         const div = document.createElement('div');
@@ -630,7 +650,7 @@ function renderMeetings() {
             <div class="meeting-title">${meeting.title}</div>
             <div class="meeting-meta">${meeting.attendees || 'No attendees specified'}</div>
             <div class="meeting-description">${meeting.description || ''}</div>
-            <div class="meeting-status">${statusLabel}</div>
+            <div class="meeting-status">${meeting.status}</div>
             <div class="item-actions">
                 ${meeting.channel === 'video' ? `<button class="action-btn join-btn" onclick="joinMeeting(${meeting.id})">Join</button>` : ''}
                 ${meeting.channel === 'phone' && meeting.attendees ? `<button class="action-btn call-btn" onclick="initiateCall('${meeting.attendees}')">☎ Call</button>` : ''}
@@ -653,8 +673,8 @@ function renderSchedule() {
             time: meeting.time,
             type: 'Meeting',
             title: meeting.title,
-            details: meeting.typeTag || meeting.channel,
-            status: meeting.completed ? 'Completed' : 'Scheduled'
+            details: `${meeting.typeTag || meeting.channel} · ${meeting.status}`,
+            status: meeting.completed ? 'Completed' : meeting.status
         });
     });
 

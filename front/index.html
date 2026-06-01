@@ -212,6 +212,10 @@
                         <input type="text" id="meetingTitle" placeholder="Enter meeting title" required>
                     </div>
                     <div class="form-group">
+                        <label for="meetingDate" id="labelMeetingDate">Meeting Date:</label>
+                        <input type="date" id="meetingDate" required>
+                    </div>
+                    <div class="form-group">
                         <label for="meetingTime" id="labelMeetingTime">Time:</label>
                         <input type="time" id="meetingTime" required>
                     </div>
@@ -246,9 +250,9 @@
                     </div>
                     <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
                         <input type="checkbox" id="approveMeeting" style="width: auto; margin: 0;">
-                        <label for="approveMeeting" style="font-weight: 600;">Approve this meeting</label>
+                        <label for="approveMeeting" id="labelApproveMeeting" style="font-weight: 600;">Approve this meeting</label>
                     </div>
-                    <button type="submit" id="submitMeetingBtn" class="submit-btn">Save & Approve Meeting</button>
+                    <button type="submit" id="submitMeetingBtn" class="submit-btn">Save Meeting</button>
                     <div id="meetingConfirmBanner" class="confirm-banner" style="display: none; margin-top: 20px; padding: 15px; background: #d4edda; border: 2px solid #28a745; border-radius: 8px; color: #155724; text-align: center; font-weight: 700;">
                         ✓ Meeting Confirmed and Booked!
                     </div>
