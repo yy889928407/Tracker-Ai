@@ -244,7 +244,11 @@
                         <label for="meetingDescription" id="labelMeetingDescription">Description:</label>
                         <textarea id="meetingDescription" placeholder="Meeting details..." rows="3"></textarea>
                     </div>
-                    <button type="submit" id="submitMeetingBtn" class="submit-btn">✓ Confirm & Book Meeting</button>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" id="approveMeeting" style="width: auto; margin: 0;">
+                        <label for="approveMeeting" style="font-weight: 600;">Approve this meeting</label>
+                    </div>
+                    <button type="submit" id="submitMeetingBtn" class="submit-btn">Save & Approve Meeting</button>
                     <div id="meetingConfirmBanner" class="confirm-banner" style="display: none; margin-top: 20px; padding: 15px; background: #d4edda; border: 2px solid #28a745; border-radius: 8px; color: #155724; text-align: center; font-weight: 700;">
                         ✓ Meeting Confirmed and Booked!
                     </div>
@@ -305,26 +309,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="meeting-approval-section" style="margin: 20px 0; padding: 20px; background: #f8f9fa; border: 1px solid #d1d5db; border-radius: 12px;">
-            <label for="approveMeeting" style="display: inline-flex; align-items: center; gap: 10px; font-size: 1rem;">
-                <input type="checkbox" id="approveMeeting">
-                Approve this meeting
-            </label>
-            <button onclick="saveMeeting()" style="margin-top: 12px; padding: 10px 16px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer;">Save Meeting</button>
-        </div>
-
-        <script>
-            function saveMeeting() {
-                const approved = document.getElementById("approveMeeting").checked;
-                if (approved) {
-                    // push to booked meetings list
-                    alert("Meeting approved and added!");
-                } else {
-                    alert("Meeting not approved, not listed.");
-                }
-            }
-        </script>
 
     </div>
 

@@ -550,6 +550,12 @@ function addMeeting(e) {
     const channel = document.getElementById('meetingChannel').value;
     const category = document.getElementById('meetingCategory').value;
     const description = document.getElementById('meetingDescription').value.trim();
+    const approved = document.getElementById('approveMeeting').checked;
+
+    if (!approved) {
+        showToastNotification('Please approve the meeting before saving.', 'warning');
+        return;
+    }
 
     if (!title || !time || !duration) {
         showToastNotification('Please complete title, time and duration before saving.', 'warning');
