@@ -32,6 +32,8 @@ const translations = {
         labelMeetingDuration: "Duration (min):",
         labelMeetingAttendees: "Attendees (emails):",
         labelMeetingType: "Meeting Type:",
+        labelMeetingDate: "Meeting Date:",
+        labelApproveMeeting: "Approve this meeting",
         labelMeetingDescription: "Description:",
         submitMeetingBtn: "Add Meeting",
         appointmentModalTitle: "Add Appointment",
@@ -88,6 +90,8 @@ const translations = {
         labelMeetingDuration: "Duración (min):",
         labelMeetingAttendees: "Asistentes (emails):",
         labelMeetingType: "Tipo de Reunión:",
+        labelMeetingDate: "Fecha de Reunión:",
+        labelApproveMeeting: "Aprueba esta reunión",
         labelMeetingDescription: "Descripción:",
         submitMeetingBtn: "Agregar Reunión",
         appointmentModalTitle: "Agregar Cita",
@@ -142,6 +146,8 @@ const translations = {
         labelMeetingDuration: "Durée (min):",
         labelMeetingAttendees: "Participants (emails):",
         labelMeetingType: "Type de Réunion:",
+        labelMeetingDate: "Date de Réunion:",
+        labelApproveMeeting: "Approuver cette réunion",
         labelMeetingDescription: "Description:",
         submitMeetingBtn: "Ajouter Réunion",
         appointmentModalTitle: "Ajouter Rendez-vous",
@@ -161,6 +167,8 @@ const translations = {
         callBtn: "☎ Appel",
         emailBtn: "📧 Email",
         meetingAdded: "Réunion ajoutée avec succès",
+        meetingApproved: "Réunion approuvée et réservée",
+        meetingPending: "Réunion enregistrée en attente",
         appointmentAdded: "Rendez-vous ajouté avec succès",
         callScheduled: "Appel programmé avec succès"
     },
@@ -196,6 +204,8 @@ const translations = {
         labelMeetingDuration: "Dauer (min):",
         labelMeetingAttendees: "Teilnehmer (E-Mails):",
         labelMeetingType: "Meeting-Typ:",
+        labelMeetingDate: "Meeting-Datum:",
+        labelApproveMeeting: "Dieses Meeting genehmigen",
         labelMeetingDescription: "Beschreibung:",
         submitMeetingBtn: "Meeting Hinzufügen",
         appointmentModalTitle: "Termin Hinzufügen",
@@ -215,8 +225,68 @@ const translations = {
         callBtn: "☎ Anruf",
         emailBtn: "📧 Email",
         meetingAdded: "Meeting erfolgreich hinzugefügt",
+        meetingApproved: "Meeting genehmigt und gebucht",
+        meetingPending: "Meeting als ausstehend gespeichert",
         appointmentAdded: "Termin erfolgreich hinzugefügt",
         callScheduled: "Anruf erfolgreich geplant"
+    },
+    ki: {
+        appTitle: "Kifuatiliaji cha Shughuli za AI",
+        subtitle: "Msimamizi wa Mikutano na Miadi ya Biashara",
+        dateLabel: "Chagua Tarehe:",
+        progressLabel: "Mafanikio ya Kila Siku:",
+        plansTitle: "📋 Safu A: Mipango & Mikutano",
+        actionsTitle: "✓ Safu B: Vitendo vya Kila Siku",
+        addMeetingBtn: "+ Ongeza Mkutano",
+        addActivityBtn: "+ Ongeza Shughuli",
+        meetingsBoxTitle: "Mikutano Iliyopangwa",
+        appointmentsBoxTitle: "Miadi",
+        callsBoxTitle: "Simu Zilizopangwa",
+        activitiesTitle: "Shughuli za Kila Siku",
+        thDone: "Imekamilika",
+        thActivity: "Shughuli",
+        thTime: "Muda",
+        thCategory: "Kategoria",
+        thActions: "Vitendo",
+        modalTitle: "Ongeza Shughuli Mpya",
+        labelActivity: "Shughuli:",
+        labelTime: "Muda:",
+        labelCategory: "Kategoria:",
+        submitBtn: "Ongeza Shughuli",
+        deleteBtn: "Futa",
+        completedNotification: "Shughuli imekamilika: ",
+        addedNotification: "Shughuli mpya imeongezwa: ",
+        meetingModalTitle: "Ongeza Mkutano",
+        labelMeetingTitle: "Kichwa cha Mkutano:",
+        labelMeetingDate: "Tarehe ya Mkutano:",
+        labelApproveMeeting: "Kubali mkutano huu",
+        labelMeetingTime: "Muda:",
+        labelMeetingDuration: "Muda (min):",
+        labelMeetingAttendees: "Washiriki (barua pepe):",
+        labelMeetingType: "Chaneli ya Mkutano:",
+        labelMeetingDescription: "Maelezo:",
+        submitMeetingBtn: "Hifadhi Mkutano",
+        appointmentModalTitle: "Ongeza Miadi",
+        labelAppointmentTitle: "Kichwa cha Miadi:",
+        labelAppointmentTime: "Muda:",
+        labelAppointmentLocation: "Mahali:",
+        labelAppointmentContact: "Barua pepe ya Mwasiliani:",
+        labelReminder: "Weka ukumbusho (dakika 15 kabla)",
+        submitAppointmentBtn: "Ongeza Miadi",
+        callModalTitle: "Panga Simu",
+        labelCallPerson: "Mtu/Kampuni:",
+        labelCallPhone: "Nambari ya Simu:",
+        labelCallEmail: "Barua pepe:",
+        labelCallTime: "Muda uliopangwa:",
+        labelCallPurpose: "Madhumuni:",
+        submitCallBtn: "Panga Simu",
+        callBtn: "☎ Piga",
+        emailBtn: "📧 Barua Pepe",
+        meetingAdded: "Mkutano umeongezwa kwa mafanikio",
+        meetingApproved: "Mkutano umekubaliwa na kuhifadhiwa",
+        meetingPending: "Mkutano umehifadhiwa kama unaosubiri idhini",
+        appointmentAdded: "Miadi imeongezwa kwa mafanikio",
+        callScheduled: "Simu imepangwa kwa mafanikio"
     }
 };
 
@@ -465,31 +535,31 @@ function updateDateDisplay() {
 }
 
 function updateLanguage() {
-    const t = translations[currentLanguage];
+    const t = translations[currentLanguage] || translations.en;
     document.getElementById('appTitle').textContent = t.appTitle;
     document.getElementById('subtitle').textContent = t.subtitle;
     document.getElementById('dateLabel').textContent = t.dateLabel;
-document.getElementById('progressLabel').textContent = t('progressLabel');
-        document.getElementById('plansTitle').textContent = t('plansTitle');
-        document.getElementById('actionsTitle').textContent = t('actionsTitle');
-        document.getElementById('addMeetingBtn').textContent = t('addMeetingBtn');
-        document.getElementById('addActivityBtn').textContent = t('addActivityBtn');
-        document.getElementById('meetingsBoxTitle').textContent = t('meetingsBoxTitle');
-        document.getElementById('thDone').textContent = t('thDone');
-        document.getElementById('thActivity').textContent = t('thActivity');
-        document.getElementById('thTime').textContent = t('thTime');
-        document.getElementById('thCategory').textContent = t('thCategory');
-        document.getElementById('thActions').textContent = t('thActions');
-        document.getElementById('submitMeetingBtn').textContent = t('submitMeetingBtn');
-        document.getElementById('labelMeetingDate').textContent = t('labelMeetingDate');
-        document.getElementById('labelApproveMeeting').textContent = t('labelApproveMeeting');
-        document.getElementById('labelMeetingTitle').textContent = t('labelMeetingTitle');
-        document.getElementById('labelMeetingTime').textContent = t('labelMeetingTime');
-        document.getElementById('labelMeetingDuration').textContent = t('labelMeetingDuration');
-        document.getElementById('labelMeetingAttendees').textContent = t('labelMeetingAttendees');
-        document.getElementById('labelMeetingType').textContent = t('labelMeetingType');
-        document.getElementById('labelMeetingCategory').textContent = t('labelMeetingCategory');
-        document.getElementById('labelMeetingDescription').textContent = t('labelMeetingDescription');
+    document.getElementById('progressLabel').textContent = t.progressLabel;
+    document.getElementById('plansTitle').textContent = t.plansTitle;
+    document.getElementById('actionsTitle').textContent = t.actionsTitle;
+    document.getElementById('addMeetingBtn').textContent = t.addMeetingBtn;
+    document.getElementById('addActivityBtn').textContent = t.addActivityBtn;
+    document.getElementById('meetingsBoxTitle').textContent = t.meetingsBoxTitle;
+    document.getElementById('thDone').textContent = t.thDone;
+    document.getElementById('thActivity').textContent = t.thActivity;
+    document.getElementById('thTime').textContent = t.thTime;
+    document.getElementById('thCategory').textContent = t.thCategory;
+    document.getElementById('thActions').textContent = t.thActions;
+    document.getElementById('submitMeetingBtn').textContent = t.submitMeetingBtn;
+    document.getElementById('labelMeetingDate').textContent = t.labelMeetingDate;
+    document.getElementById('labelApproveMeeting').textContent = t.labelApproveMeeting;
+    document.getElementById('labelMeetingTitle').textContent = t.labelMeetingTitle;
+    document.getElementById('labelMeetingTime').textContent = t.labelMeetingTime;
+    document.getElementById('labelMeetingDuration').textContent = t.labelMeetingDuration;
+    document.getElementById('labelMeetingAttendees').textContent = t.labelMeetingAttendees;
+    document.getElementById('labelMeetingType').textContent = t.labelMeetingType;
+    document.getElementById('labelMeetingCategory').textContent = t.labelMeetingCategory;
+    document.getElementById('labelMeetingDescription').textContent = t.labelMeetingDescription;
 }
 
 function getDate() {
