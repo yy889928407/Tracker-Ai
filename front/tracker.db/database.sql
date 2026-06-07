@@ -3,3 +3,6 @@ CREATE TABLE tasks (
     task_name TEXT,
     status TEXT
 );
+
+INSERT INTO tasks (task_name, status)
+VALUES ('Meeting', 'Pending');
